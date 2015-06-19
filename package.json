@@ -1,15 +1,17 @@
 {
   "name": "pluto-path",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Create a Pluto dependency injection module from files in a path or paths",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "mocha --recursive",
+    "autotest": "mocha --recursive -w"
+  },
+  "engines": {
+    "node": ">=0.12"
   },
   "keywords": [
     "pluto",
-    "dependency",
-    "injection",
     "dependency",
     "injection",
     "di"
@@ -17,11 +19,12 @@
   "author": "Evan Cowden <evan38109@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "require-all": "^1.0.0",
-    "pluto": "^0.5.0"
+    "pluto": "^0.6.0",
+    "require-all": "^1.1.0",
+    "require-path": "^0.1.0"
   },
   "devDependencies": {
-    "chai": "^2.2.0",
+    "chai": "^3.0.0",
     "mocha": "^2.2.4"
   }
 }
