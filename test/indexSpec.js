@@ -2,41 +2,38 @@ var expect = require('chai').expect;
 var path = require('path');
 var plutoPath = require('../lib/index');
 var fixturesPath = path.join(__dirname, 'fixtures');
+var simpleTestPath = path.join(fixturesPath, 'dir1');
 
 describe('index', function() {
 
-  it('maps js files in the root of the search path to modules', function() {
-    return plutoPath([fixturesPath]).then(function(plutoModule) {
+  describe('the given options', function() {
+
+    it('accepts a array of paths', function() {
+      return plutoPath([simpleTestPath]).then(assertSimpleBindingWorks);
+    });
+
+    it('accepts a configuration object', function() {
+      return plutoPath({
+        path: simpleTestPath
+      }).then(assertSimpleBindingWorks);
+    });
+
+    it('accepts a single paths string', function() {
+      return plutoPath(simpleTestPath).then(assertSimpleBindingWorks);
+    });
+
+    function assertSimpleBindingWorks(plutoModule) {
       var a = plutoModule.get('a');
       expect(a).to.be.an('object');
-      expect(a.b).to.eql(require('./fixtures/b')());
-    });
-  });
+      expect(a.b).to.eql(require('./fixtures/dir1/b')());
+    }
 
-  it('accepts a configuration object', function() {
-    return plutoPath({
-      path: fixturesPath
-    }).then(function(plutoModule) {
-      var a = plutoModule.get('a');
-      expect(a).to.be.an('object');
-      expect(a.b).to.eql(require('./fixtures/b')());
+    it('throws a meaningful error if given a bad configuration type', function() {
+      expect(function() {
+        plutoPath(42);
+      }).to.throw(Error, /options must be a string, array or strings or an object/);
     });
-  });
 
-  it('accepts a array of paths', function() {
-    return plutoPath({
-      path: fixturesPath
-    }).then(function(plutoModule) {
-      var a = plutoModule.get('a');
-      expect(a).to.be.an('object');
-      expect(a.b).to.eql(require('./fixtures/b')());
-    });
-  });
-
-  it('throws a meaningful error if given a bad configuration type', function() {
-    expect(function() {
-      plutoPath(42);
-    }).to.throw(Error, /options must be a string, array or strings or an object/);
   });
 
 });
