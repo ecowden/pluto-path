@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
-var standardBindingSelector = require('../lib/standardBindingSelector');
+var standardBindingSelector = require('../lib/standardBindingStrategy');
 
-describe('standardBindingSelector', function() {
+describe('standardBindingStrategy', function() {
 
   describe('a component that is not a function', function () {
 
