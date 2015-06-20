@@ -1,7 +1,7 @@
 var expect = require('chai').expect;
 var filenameToComponentName = require('../lib/filenameToComponentName');
 
-describe('filenameToComponentName', function() {
+describe('standardNamingStrategy', function() {
 
   it('drops extensions', function() {
     var actual = filenameToComponentName('target.ext');
