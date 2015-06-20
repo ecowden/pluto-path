@@ -16,7 +16,7 @@ describe('standardBindingStrategy', function() {
 
     it('with a lower-case name is bound with `toFactory`', function() {
       var actual = standardBindingSelector('myFactory', noop);
-      expect(actual).to.equal('toFunction');
+      expect(actual).to.equal('toFactory');
     });
 
     it('with an upper-case name is bound with `toContructor`', function() {
