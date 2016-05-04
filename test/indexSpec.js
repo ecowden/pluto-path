@@ -29,6 +29,18 @@ describe('index', function() {
       }).then(assertSimpleBindingWorks);
     });
 
+    it('accepts additional manual bindings', function() {
+      return plutoPath({
+        path: simpleTestPath,
+        extraBindings: function(bind) {
+          bind('theAnswer').toInstance(42);
+        }
+      }).then(function (plutoModule) {
+        var actual = plutoModule.get('theAnswer');
+        expect(actual).to.eql(42);
+      });
+    });
+
     it('throws a meaningful error if given a bad configuration type', function() {
       expect(function() {
         plutoPath(42);
