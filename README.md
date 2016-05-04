@@ -11,7 +11,7 @@ var path = require('path');
 
 requirePath(path.join(__dirname, 'my-directory')) // you can pass a single search path or array of them
   .then(function (plutoModule) {
-    // Most of the time, you want to eagerly load all files. 
+    // Most of the time, you want to eagerly load all files.
     // Alternately, use the plutoModule as desired and lazily load specific components.
     plutoModule.eagerlyLoadAll();
   })
@@ -40,6 +40,9 @@ Since the default include and exclude options work for most projects and the pat
 | path     | _string_ or _array_ of absolute paths to search for files. Default: `.`. |
 | include  | _string_ or _array_ of [minimatch](https://github.com/isaacs/minimatch) patterns. A file in the path(s) that match at least one pattern will be `require(...)`'d unless the file also matches an exclusion pattern. Default: `['**/*.js', '**/*.json']`.|
 | exclude  | _string_ or _array_ of [minimatch](https://github.com/isaacs/minimatch) patterns. Files in the path(s) that match at least one pattern will be excluded. Default: `['**/*Spec.js']`. |
+| extraBindings | A function given the standard pluto `bind` object. Use when
+you'd like to specify additional options beyond what pluto-path can find on the
+filesystem. |
 
 ```js
 var path = require('path');
