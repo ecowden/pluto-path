@@ -1,31 +1,45 @@
 {
   "name": "pluto-path",
-  "version": "0.3.0",
+  "version": "0.4.0",
   "description": "Create a Pluto dependency injection module from files in a path or paths",
   "main": "lib/index.js",
   "scripts": {
-    "test": "mocha --recursive",
-    "autotest": "mocha --recursive -w"
+    "old-test": "mocha --recursive",
+    "old-autotest": "mocha --recursive -w",
+    "test": "nyc ava --verbose",
+    "autotest": "ava --watch",
+    "lint": "eslint .",
+    "lint-fix": "eslint . --fix"
   },
   "engines": {
-    "node": ">=0.12"
+    "node": ">=4.0.0"
   },
   "keywords": [
     "pluto",
     "dependency",
     "injection",
-    "di"
+    "di",
+    "dependency injection",
+    "testing"
   ],
   "author": "Evan Cowden <evan38109@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "lodash": "^3.9.3",
+    "lodash": "^4.17.4",
     "pluto": "^0.6.0",
     "require-path": "^0.2.0"
   },
   "devDependencies": {
     "chai": "^3.0.0",
     "mocha": "^2.2.4",
-    "mocha-jshint": "^2.2.3"
+    "mocha-jshint": "^2.2.3",
+    "ava": "^0.17.0",
+    "babel-preset-es2015-node6": "^0.4.0",
+    "coveralls": "^2.11.15",
+    "eslint": "^3.14.1",
+    "eslint-config-standard": "^6.2.1",
+    "eslint-plugin-promise": "^3.4.0",
+    "eslint-plugin-standard": "^2.0.1",
+    "nyc": "^10.1.2"
   }
 }
