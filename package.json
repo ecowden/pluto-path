@@ -37,7 +37,7 @@
   "dependencies": {
     "co": "^4.6.0",
     "lodash": "^4.17.4",
-    "pluto": "^0.6.0",
+    "pluto": "^1.0.0",
     "require-path": "^0.3.0"
   },
   "devDependencies": {
