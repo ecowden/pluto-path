@@ -1,6 +1,6 @@
 # pluto-path
 
-Create a Pluto dependency injection module from files in a path or paths.
+Create and bootstreap an app using the [Pluto](https://github.com/ecowden/pluto.js) dependency injection package from files in a path or paths.
 
 | Branch        | Status        |
 | ------------- |:------------- |
@@ -12,16 +12,17 @@ Create a Pluto dependency injection module from files in a path or paths.
 ### Simplified Options
 
 ```js
-var path = require('path');
+const path = require('path')
+const plutoPath = require('pluto-path')
 
-requirePath(path.join(__dirname, 'my-directory')) // you can pass a single search path or array of them
-  .then(function (plutoModule) {
-    // Most of the time, you want to eagerly load all files.
-    // Alternately, use the plutoModule as desired and lazily load specific components.
-    plutoModule.eagerlyLoadAll();
+plutoPath(path.join(__dirname, 'my-directory')) // you can pass a single search path or array of them
+  .then(function (app) {
+    // `app` holds the result of calling pluto's `.bootstrap()`
+    // function. In this case, that's a Map from filenames to their
+    // components.
   })
   // don't forget to handle errors!
-  .catch(handleError);
+  .catch(handleError)
 ```
 
 ### Binding Types
@@ -50,18 +51,19 @@ you'd like to specify additional options beyond what pluto-path can find on the
 filesystem. |
 
 ```js
-var path = require('path');
+const path = require('path')
+const plutoPath = require('pluto-path')
 
-requirePath({
+plutoPath({
     path: path.join(__dirname, 'my-directory'),
     include: ['**/*.js', '**/*.json'],
     exclude: ['**/*Spec.js']
   })
-  .then(function (plutoModule) {
-    // Most of the time, you want to eagerly load all files.
-    // Alternately, use the plutoModule as desired and lazily load specific components.
-    plutoModule.eagerlyLoadAll();
+  .then(function (app) {
+    // `app` holds the result of calling pluto's `.bootstrap()`
+    // function. In this case, that's a Map from filenames to their
+    // components.
   })
   // don't forget to handle errors!
-  .catch(handleError);
+  .catch(handleError)
 ```
