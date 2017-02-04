@@ -2,6 +2,11 @@
 
 Create a Pluto dependency injection module from files in a path or paths.
 
+| Branch        | Status        |
+| ------------- |:------------- |
+| Master        | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png?branch=master)](https://travis-ci.org/ecowden/pluto-path) [![Coverage Status](https://coveralls.io/repos/github/ecowden/pluto-path/badge.svg?branch=master)](https://coveralls.io/github/ecowden/pluto-path?branch=master) |
+| All           | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png)](https://travis-ci.org/ecowden/pluto-path) |
+
 ## Usage
 
 ### Simplified Options
