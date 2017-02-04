@@ -4,7 +4,7 @@ Create a Pluto dependency injection module from files in a path or paths.
 
 | Branch        | Status        |
 | ------------- |:------------- |
-| Master        | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png?branch=master)](https://travis-ci.org/ecowden/pluto-path) [![Coverage Status](https://coveralls.io/repos/github/ecowden/pluto-path/badge.svg?branch=master)](https://coveralls.io/github/ecowden/pluto-path?branch=master) |
+| Master        | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png?branch=master)](https://travis-ci.org/ecowden/pluto-path) [![Coverage Status](https://coveralls.io/repos/github/ecowden/pluto-path/badge.svg?branch=master)](https://coveralls.io/github/ecowden/pluto-path?branch=master) [![NSP Status](https://nodesecurity.io/orgs/ecowden/projects/5cff7ae1-a34a-49f7-bf18-f2b816180930/badge)](https://nodesecurity.io/orgs/ecowden/projects/5cff7ae1-a34a-49f7-bf18-f2b816180930) |
 | All           | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png)](https://travis-ci.org/ecowden/pluto-path) |
 
 ## Usage
