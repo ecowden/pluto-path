@@ -4,8 +4,6 @@
   "description": "Create a Pluto dependency injection module from files in a path or paths",
   "main": "lib/index.js",
   "scripts": {
-    "old-test": "mocha --recursive",
-    "old-autotest": "mocha --recursive -w",
     "test": "nyc ava --verbose",
     "autotest": "ava --verbose --watch",
     "lint": "eslint .",
@@ -42,10 +40,7 @@
     "require-path": "^0.2.0"
   },
   "devDependencies": {
-    "chai": "^3.0.0",
-    "mocha": "^2.2.4",
-    "mocha-jshint": "^2.2.3",
-    "ava": "^0.17.0",
+    "ava": "^0.18.0",
     "babel-preset-es2015-node6": "^0.4.0",
     "coveralls": "^2.11.15",
     "eslint": "^3.14.1",
