@@ -7,7 +7,7 @@
     "old-test": "mocha --recursive",
     "old-autotest": "mocha --recursive -w",
     "test": "nyc ava --verbose",
-    "autotest": "ava --watch",
+    "autotest": "ava --verbose --watch",
     "lint": "eslint .",
     "lint-fix": "eslint . --fix"
   },
@@ -24,6 +24,18 @@
   ],
   "author": "Evan Cowden <evan38109@gmail.com>",
   "license": "MIT",
+  "ava": {
+    "timeout": "1m",
+    "files": [
+      "lib/**/*Spec.js",
+      "*Spec.js"
+    ],
+    "babel": {
+      "presets": [
+        "es2015-node6"
+      ]
+    }
+  },
   "dependencies": {
     "lodash": "^4.17.4",
     "pluto": "^0.6.0",
