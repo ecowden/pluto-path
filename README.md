@@ -32,7 +32,10 @@ plutoPath(path.join(__dirname, 'my-directory')) // you can pass a single search 
     // wired together.
   })
   // Don't forget about errors!
-  .catch(handleError)
+  .catch(err => {
+    console.error(err.stack) // eslint-disable-line no-console
+    process.exitCode = 1
+  })
 ```
 
 ### Binding Types
@@ -79,7 +82,10 @@ plutoPath({
     // It's created by calling pluto's `bootstrap(...)` function.
   })
   // Don't forget about errors!
-  .catch(handleError)
+  .catch(err => {
+    console.error(err.stack) // eslint-disable-line no-console
+    process.exitCode = 1
+  })
 ```
 
 ## Humble Opinionated Recommendations
@@ -107,6 +113,11 @@ const path = require('path')
 const plutoPath = require('pluto-path')
 
 plutoPath(path.join(__dirname, 'app'))
+  // Don't forget about errors!
+  .catch(err => {
+    console.error(err.stack) // eslint-disable-line no-console
+    process.exitCode = 1
+  })
 ```
 
 ### Tests
