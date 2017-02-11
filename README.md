@@ -1,27 +1,41 @@
 # pluto-path
 
-Create a Pluto dependency injection module from files in a path or paths.
+Create and bootstrap an app from files in a path or paths using the [Pluto](https://github.com/ecowden/pluto.js) dependency injection package.
 
 | Branch        | Status        |
 | ------------- |:------------- |
-| Master        | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png?branch=master)](https://travis-ci.org/ecowden/pluto-path) [![Coverage Status](https://coveralls.io/repos/github/ecowden/pluto-path/badge.svg?branch=master)](https://coveralls.io/github/ecowden/pluto-path?branch=master) |
+| Master        | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png?branch=master)](https://travis-ci.org/ecowden/pluto-path) [![Coverage Status](https://coveralls.io/repos/github/ecowden/pluto-path/badge.svg?branch=master)](https://coveralls.io/github/ecowden/pluto-path?branch=master) [![NSP Status](https://nodesecurity.io/orgs/ecowden/projects/5cff7ae1-a34a-49f7-bf18-f2b816180930/badge)](https://nodesecurity.io/orgs/ecowden/projects/5cff7ae1-a34a-49f7-bf18-f2b816180930) |
 | All           | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png)](https://travis-ci.org/ecowden/pluto-path) |
+
+**Why?**
+
+This package aims to solve two problems:
+
+1. **Bootstrapping**. There are many example Express/Hapi/etc. applications where a chain of `index.js` files require a bunch of routes and other bits. I find this annoying. When I create a new part of my app, I want it to Just Work without extra boilerplate.
+1. **Testing**. The key to good testing isn't writing tests: it's writing good, testable code. When unit testing, in particular, we want to test one thing at a time. But what about when our one thing uses other things? By injecting those other things, often called _collaborators_, we can pass mocks or fakes to our code under test.
 
 ## Usage
 
 ### Simplified Options
 
 ```js
-var path = require('path');
+'use strict'
 
-requirePath(path.join(__dirname, 'my-directory')) // you can pass a single search path or array of them
-  .then(function (plutoModule) {
-    // Most of the time, you want to eagerly load all files.
-    // Alternately, use the plutoModule as desired and lazily load specific components.
-    plutoModule.eagerlyLoadAll();
+const path = require('path')
+const plutoPath = require('pluto-path')
+
+plutoPath(path.join(__dirname, 'my-directory')) // you can pass a single search path or array of them
+  .then(function (app) {
+    // `app` holds a Map from filenames to their components.
+    // It's created by calling pluto's `bootstrap(...)` function.
+    // Use it if you want to do interact with components after they're
+    // wired together.
   })
-  // don't forget to handle errors!
-  .catch(handleError);
+  // Don't forget about errors!
+  .catch(err => {
+    console.error(err.stack) // eslint-disable-line no-console
+    process.exitCode = 1
+  })
 ```
 
 ### Binding Types
@@ -50,18 +64,77 @@ you'd like to specify additional options beyond what pluto-path can find on the
 filesystem. |
 
 ```js
-var path = require('path');
+'use strict'
 
-requirePath({
+const path = require('path')
+const plutoPath = require('pluto-path')
+
+plutoPath({
     path: path.join(__dirname, 'my-directory'),
     include: ['**/*.js', '**/*.json'],
-    exclude: ['**/*Spec.js']
+    exclude: ['**/*Spec.js'],
+    extraBindings: (bind) => {
+      bind('meaningOfLife').toInstance(42)
+    }
   })
-  .then(function (plutoModule) {
-    // Most of the time, you want to eagerly load all files.
-    // Alternately, use the plutoModule as desired and lazily load specific components.
-    plutoModule.eagerlyLoadAll();
+  .then(function (app) {
+    // `app` holds a Map from filenames to their components.
+    // It's created by calling pluto's `bootstrap(...)` function.
   })
-  // don't forget to handle errors!
-  .catch(handleError);
+  // Don't forget about errors!
+  .catch(err => {
+    console.error(err.stack) // eslint-disable-line no-console
+    process.exitCode = 1
+  })
 ```
+
+## Humble Opinionated Recommendations
+
+### Project Organization
+
+There's usually two different kinds of files in an app:
+
+1. Long-lived components, like route handlers and server configuration. These need to be run exactly once and become a part of your app. Place these in an `app` folder.
+1. Utilities and such that don't have a life of their own, and which you don't want subject to dependency injection. Place these in a `lib` folder.
+
+```
+/
+  /app        Bootstrap long-lived components
+  /lib        Utilities and such you don't want to dependency-inject
+  index.js    `main` file with initial bootstrapping
+```
+
+Instruct `pluto-path` to bootstrap the `app` folder and leave the `lib` folder alone. If you're not doing any fancy startup stuff and you're fine with other defaults, your `index.js` file might look like:
+
+```js
+'use strict'
+
+const path = require('path')
+const plutoPath = require('pluto-path')
+
+plutoPath(path.join(__dirname, 'app'))
+  // Don't forget about errors!
+  .catch(err => {
+    console.error(err.stack) // eslint-disable-line no-console
+    process.exitCode = 1
+  })
+```
+
+### Tests
+
+You might notice that there's not test path, event though one of the main motivations for dependency injection is testability. Rather than use a separate `test` tree, I like to put my tests right next to the thing they're testing, with a `Spec` suffix, like:
+
+```
+/
+  /app
+    myThing.js
+    myThingSpec.js
+```
+
+I am highly influenced by Uncle Bob's [Principles of Object Oriented Design](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod). In this case:
+
+* **Common Closure Principle**: Things that change together should be packaged together.
+
+When it comes to unit testing, a test and the thing it tests unsurprisingly tend to change together, so I like to put them next to each other. Stepping back, this makes logical sense, too: why hunt deep down through two separate directory trees just to get to the two files you want to change? Putting tests next to the code they test reduces friction when writing tests and just makes life easier.
+
+The default arguments to `pluto-path` assume this kind of organization. If you want to do something else, change the `include` and `exclude` options as you see fit.

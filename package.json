@@ -1,6 +1,6 @@
 {
   "name": "pluto-path",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "Create a Pluto dependency injection module from files in a path or paths",
   "main": "lib/index.js",
   "scripts": {
@@ -35,9 +35,10 @@
     }
   },
   "dependencies": {
+    "co": "^4.6.0",
     "lodash": "^4.17.4",
-    "pluto": "^0.6.0",
-    "require-path": "^0.2.0"
+    "pluto": "^1.0.0",
+    "require-path": "^0.3.0"
   },
   "devDependencies": {
     "ava": "^0.18.0",
