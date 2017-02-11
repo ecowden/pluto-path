@@ -1,6 +1,8 @@
 # pluto-path
 
-Create and bootstreap an app using the [Pluto](https://github.com/ecowden/pluto.js) dependency injection package from files in a path or paths.
+Create and bootstrap an app from files in a path or paths using the [Pluto](https://github.com/ecowden/pluto.js) dependency injection package.
+
+For instance, if you're getting tired of needing to `require(...)` each new route file in your Express/Hapi/etc. app, use `pluto-path` to automatically load files from a given path.
 
 | Branch        | Status        |
 | ------------- |:------------- |
@@ -12,6 +14,8 @@ Create and bootstreap an app using the [Pluto](https://github.com/ecowden/pluto.
 ### Simplified Options
 
 ```js
+'use strict'
+
 const path = require('path')
 const plutoPath = require('pluto-path')
 
@@ -51,13 +55,18 @@ you'd like to specify additional options beyond what pluto-path can find on the
 filesystem. |
 
 ```js
+'use strict'
+
 const path = require('path')
 const plutoPath = require('pluto-path')
 
 plutoPath({
     path: path.join(__dirname, 'my-directory'),
     include: ['**/*.js', '**/*.json'],
-    exclude: ['**/*Spec.js']
+    exclude: ['**/*Spec.js'],
+    extraBindings: (bind) => {
+      bind('meaningOfLife').toInstance(42)
+    }
   })
   .then(function (app) {
     // `app` holds the result of calling pluto's `.bootstrap()`
@@ -67,3 +76,49 @@ plutoPath({
   // don't forget to handle errors!
   .catch(handleError)
 ```
+
+## Humble Opinionated Recommendations
+
+### Project Organization
+
+There's usually two different kinds of files in an app:
+
+1. Long-lived components, like route handlers and server configuration. These need to be run exactly once and become a part of your app. Place these in an `app` folder.
+1. Utilities and such that don't have a life of their own, and which you don't want subject to dependency injection. Place these in a `lib` folder.
+
+```
+/
+  /app        Bootstrap long-lived components
+  /lib        Utilities and such you don't want to dependency-inject
+  index.js    `main` file with initial bootstrapping
+```
+
+Instruct `pluto-path` to bootstrap the `app` folder and leave the `lib` folder alone. If you're not doing any fancy startup stuff and you're fine with other defaults, your `index.js` file might look like:
+
+```js
+'use strict'
+
+const path = require('path')
+const plutoPath = require('pluto-path')
+
+plutoPath(path.join(__dirname, 'app'))
+```
+
+### Tests
+
+You might notice that there's not test path, event though one of the main motivations for dependency injection is testability. Rather than use a separate `test` tree, I like to put my tests right next to the thing they're testing, with a `Spec` suffix, like:
+
+```
+/
+  /app
+    myThing.js
+    myThingSpec.js
+```
+
+I am highly influenced by Uncle Bob's [Principles of Object Oriented Design](http://butunclebob.com/ArticleS.UncleBob.PrinciplesOfOod). In this case:
+
+* **Common Closure Principle**: Things that change together should be packaged together.
+
+When it comes to unit testing, a test and the thing it tests unsurprisingly tend to change together, so I like to put them next to each other. Stepping back, this makes logical sense, too: why hunt deep down through two separate directory trees just to get to the two files you want to change? Putting tests next to the code they test reduces friction when writing tests and just makes life easier.
+
+The default arguments to `pluto-path` assume this kind of organization. If you want to do something else, change the `include` and `exclude` options as you see fit.
