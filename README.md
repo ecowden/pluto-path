@@ -2,12 +2,17 @@
 
 Create and bootstrap an app from files in a path or paths using the [Pluto](https://github.com/ecowden/pluto.js) dependency injection package.
 
-For instance, if you're getting tired of needing to `require(...)` each new route file in your Express/Hapi/etc. app, use `pluto-path` to automatically load files from a given path.
-
 | Branch        | Status        |
 | ------------- |:------------- |
 | Master        | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png?branch=master)](https://travis-ci.org/ecowden/pluto-path) [![Coverage Status](https://coveralls.io/repos/github/ecowden/pluto-path/badge.svg?branch=master)](https://coveralls.io/github/ecowden/pluto-path?branch=master) [![NSP Status](https://nodesecurity.io/orgs/ecowden/projects/5cff7ae1-a34a-49f7-bf18-f2b816180930/badge)](https://nodesecurity.io/orgs/ecowden/projects/5cff7ae1-a34a-49f7-bf18-f2b816180930) |
 | All           | [![Build Status](https://travis-ci.org/ecowden/pluto-path.png)](https://travis-ci.org/ecowden/pluto-path) |
+
+**Why?**
+
+This package aims to solve two problems:
+
+1. **Bootstrapping**. There are many example Express/Hapi/etc. applications where a chain of `index.js` files require a bunch of routes and other bits. I find this annoying. When I create a new part of my app, I want it to Just Work without extra boilerplate.
+1. **Testing**. The key to good testing isn't writing tests: it's writing good, testable code. When unit testing, in particular, we want to test one thing at a time. But what about when our one thing uses other things? By injecting those other things, often called _collaborators_, we can pass mocks or fakes to our code under test.
 
 ## Usage
 
@@ -21,11 +26,12 @@ const plutoPath = require('pluto-path')
 
 plutoPath(path.join(__dirname, 'my-directory')) // you can pass a single search path or array of them
   .then(function (app) {
-    // `app` holds the result of calling pluto's `.bootstrap()`
-    // function. In this case, that's a Map from filenames to their
-    // components.
+    // `app` holds a Map from filenames to their components.
+    // It's created by calling pluto's `bootstrap(...)` function.
+    // Use it if you want to do interact with components after they're
+    // wired together.
   })
-  // don't forget to handle errors!
+  // Don't forget about errors!
   .catch(handleError)
 ```
 
@@ -69,11 +75,10 @@ plutoPath({
     }
   })
   .then(function (app) {
-    // `app` holds the result of calling pluto's `.bootstrap()`
-    // function. In this case, that's a Map from filenames to their
-    // components.
+    // `app` holds a Map from filenames to their components.
+    // It's created by calling pluto's `bootstrap(...)` function.
   })
-  // don't forget to handle errors!
+  // Don't forget about errors!
   .catch(handleError)
 ```
 
