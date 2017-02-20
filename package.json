@@ -1,6 +1,6 @@
 {
   "name": "pluto-path",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Create a Pluto dependency injection module from files in a path or paths",
   "main": "lib/index.js",
   "scripts": {
@@ -11,6 +11,11 @@
   },
   "engines": {
     "node": ">=4.0.0"
+  },
+  "homepage": "https://github.com/ecowden/pluto-path",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/ecowden/pluto-path.git"
   },
   "keywords": [
     "pluto",
